@@ -14,7 +14,17 @@ public class FireShell : MonoBehaviour
     // Start is called before the first frame update
     void CreateBullet()
     {
-        Instantiate(bullet, turret.transform.position, turret.transform.rotation);
+       GameObject shell =  Instantiate(bullet, turret.transform.position, turret.transform.rotation);
+        shell.GetComponent<Rigidbody>().velocity = speed * turretBase.forward;
+    }
+
+    void RotateTurret()
+    {
+        float? angle = CalculateAngle(true);
+        if(angle != null)
+        {
+            turretBase.localEulerAngles = new Vector3(360f - (float)angle, 0f, 0f); 
+        }
     }
 
     float? CalculateAngle(bool low)
@@ -27,7 +37,7 @@ public class FireShell : MonoBehaviour
         float sSqr = speed * speed;
         float underTheSqrRoot = (sSqr * sSqr) - gravity * (gravity * x * x + 2 * y * sSqr);
 
-        if (underTheSqrRoot >= 0f);
+        if (underTheSqrRoot >= 0f)
         {
             float root = Mathf.Sqrt(underTheSqrRoot);
             float highAngle = sSqr + root;
@@ -50,6 +60,7 @@ public class FireShell : MonoBehaviour
         Vector3 direction = (enemy.transform.position - this.transform.position).normalized;
         Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0 , direction.z));
         this.transform.rotation = Quaternion.Slerp(this.transform.rotation, lookRotation, Time.deltaTime * rotSpeed);
+        RotateTurret();
        if(Input.GetKeyDown(KeyCode.Space))
         {
             CreateBullet();
