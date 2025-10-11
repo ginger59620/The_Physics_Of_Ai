@@ -10,8 +10,8 @@ public class FireShell : MonoBehaviour
     public GameObject enemy;
     public Transform turretBase;
     float speed = 15;
-    float rotSpeed = 2;
-    float moveSpeed = 3;
+    float rotSpeed = 5;
+    float moveSpeed = 1;
 
     // Start is called before the first frame update
     void CreateBullet()
